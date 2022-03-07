@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
-from card import Card
 import random
+from typing import Optional
 
-from model.enums import FrenchSuits, FrenchCards
-from model.exceptions import CheatingError, InvalidDeckError
+from src.cards.card import Card
+from src.model.enums import FrenchSuits, FrenchCards
+from src.model.exceptions import InvalidDeckError, CheatingError
 
 
 class Deck(ABC):
@@ -13,21 +14,22 @@ class Deck(ABC):
     override these functions depending on the game."""
 
     @abstractmethod
-    def __init__(self, deck_size: int):
-        self.rankings = self.__build_rankings()
-        self.cards = self.__build_deck()
+    def __init__(self, deck_size: int, *args, **kwargs):
+        self.rankings = self.build_rankings(*args, **kwargs)
+        self.cards = self._build_deck()
         self.deck_size = deck_size
         self.missing_cards = []
         if not self.validate_deck_composition():
             raise InvalidDeckError
 
     @abstractmethod
-    def __build_deck(self) -> list[Card]:
+    def _build_deck(self) -> list[Card]:
         """Decks are not consistently built the same way, so this function does not have a parent implementation"""
         pass
 
-    def __build_rankings(self) -> dict:
-        """Decks rankings vary, so this function does not have a parent implementation"""
+    def build_rankings(self, *args, **kwargs) -> dict:
+        """Decks rankings vary, so this function does not have a parent implementation
+            """
 
         pass
 
@@ -66,6 +68,7 @@ class Deck(ABC):
         Returns:
             bool : returns a single card from the deck of cards
             """
+
         if card not in self.missing_cards:
             raise CheatingError
 
@@ -84,31 +87,44 @@ class Deck(ABC):
         random.shuffle(self.cards)
 
     def validate_deck_composition(self) -> bool:
-        """A deck needs to divide its size evenly across suits and their card types"""
-        return self.deck_size / len(FrenchSuits) == len(FrenchCards)
+        """A deck needs to divide its size evenly across suits and their card types. If
+        the joker card has no value, it is not in the deck. Validation adjust accordingly
+        Returns:
+            (bool) : a bool indicating whether the deck composition is valid or not."""
+        if self.rankings[FrenchCards.joker] is None:
+            return self.deck_size / len(FrenchSuits) == len(FrenchCards) - 1
+        else:
+            return self.deck_size / len(FrenchSuits) == len(FrenchCards)
 
 
 class StandardFrenchDeck(Deck):
     """Standard French Deck"""
 
-    def __init__(self, deck_size=52):
-        super().__init__(deck_size=deck_size)
+    def __init__(self, deck_size=52, rankings=None):
+        super().__init__(deck_size=deck_size, rankings=rankings)
 
-    def __build_deck(self) -> list[Card]:
+    def _build_deck(self) -> list[Card]:
         """Building a deck based on the size of the deck, the types of cards, and the suits.
-        The"""
+        Only add a card to the deck if it has been given a ranking, e.g. joker cards are in use
+        Returns:
+            (list) : a list of cards the deck is built with"""
         cards = []
         for suit in FrenchSuits:
             for card in FrenchCards:
-                cards.append(Card(suit, self.rankings[card.value]))
-
+                if self.rankings[card] is not None:
+                    cards.append(Card(suit=suit, pip_or_face=card, rank=self.rankings[card]))
         return cards
 
-    def __build_rankings(self) -> dict:
+    def build_rankings(self, rankings=None) -> dict:
         """Build rankings for a standard 52 card french deck. Jokers have no value and are not present in a standard
-        52 card deck. """
-        rankings = {FrenchCards.one: 1, FrenchCards.two: 2, FrenchCards.three: 3, FrenchCards.four: 4,
-                    FrenchCards.five: 5, FrenchCards.six: 6, FrenchCards.seven: 7, FrenchCards.eight: 8,
-                    FrenchCards.nine: 9, FrenchCards.ten: 10, FrenchCards.jack: 11, FrenchCards.queen: 12,
-                    FrenchCards.king: 13, FrenchCards.joker: None}
-        return rankings
+        52 card deck.
+        Args:
+            rankings (dict[Optional]): non default rankings to create the deck with.
+
+        Returns:
+            (dict) : a dictionary of the provided rankings or the default rankings."""
+        default_rankings = {FrenchCards.one: 1, FrenchCards.two: 2, FrenchCards.three: 3, FrenchCards.four: 4,
+                            FrenchCards.five: 5, FrenchCards.six: 6, FrenchCards.seven: 7, FrenchCards.eight: 8,
+                            FrenchCards.nine: 9, FrenchCards.ten: 10, FrenchCards.jack: 11, FrenchCards.queen: 12,
+                            FrenchCards.king: 13, FrenchCards.joker: None}
+        return rankings or default_rankings
