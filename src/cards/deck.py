@@ -38,7 +38,7 @@ class Deck(ABC):
         of the deck or a random card. Deletes the card from the deck because it is no
         longer in the deck, it is in a hand. We add the card to a list of missing cards,
         in order to prevent 'cheating' by validating a returned card is in this list.
-        The end of the card list is treated as the top of the deck - a LIFO stack.
+        The begining of the list is treated as the top of the deck.
 
         Args:
             draw_random (bool): whether to draw a card randomly from the deck
@@ -52,21 +52,21 @@ class Deck(ABC):
             self.missing_cards.append(card)
             return card
         else:
-            card = self.cards.pop()
+            card = self.cards.pop(0)
             self.missing_cards.append(card)
             return card
 
     def insert_card(self, card: Card, insert_random: bool = False) -> bool:
         """Insert a card back into the deck. Validating it is a card that is
         missing from the deck and in a hand. Inserts randomly or at the top of
-        the deck (appended to the list).
+        the deck (inserted at index 0 to the list).
 
         Args:
             insert_random (bool): whether to insert a card randomly into the deck
             card (Card): a card to insert into the deck
 
         Returns:
-            bool : returns a single card from the deck of cards
+            bool : returns true if the card was successfully inserted
             """
 
         if card not in self.missing_cards:
@@ -79,7 +79,7 @@ class Deck(ABC):
         else:
             card = self.cards.pop()
             self.missing_cards.append(card)
-            self.cards.append(card)
+            self.cards.insert(0, card)
             return True
 
     def shuffle_cards(self):
@@ -123,7 +123,7 @@ class StandardFrenchDeck(Deck):
 
         Returns:
             (dict) : a dictionary of the provided rankings or the default rankings."""
-        default_rankings = {FrenchCards.one: 1, FrenchCards.two: 2, FrenchCards.three: 3, FrenchCards.four: 4,
+        default_rankings = {FrenchCards.ace: 14, FrenchCards.two: 2, FrenchCards.three: 3, FrenchCards.four: 4,
                             FrenchCards.five: 5, FrenchCards.six: 6, FrenchCards.seven: 7, FrenchCards.eight: 8,
                             FrenchCards.nine: 9, FrenchCards.ten: 10, FrenchCards.jack: 11, FrenchCards.queen: 12,
                             FrenchCards.king: 13, FrenchCards.joker: None}

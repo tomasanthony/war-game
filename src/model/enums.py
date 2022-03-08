@@ -31,7 +31,6 @@ class FrenchCards(Enum):
     the card types. The value rankings of the card are not given here,
     but at the Deck level, because some decks may rank cards differently.
     For instance, Ace high or jokers are wild"""
-    one = 'One'
     two = 'Two'
     three = 'Three'
     four = 'Four'
@@ -45,3 +44,4 @@ class FrenchCards(Enum):
     queen = 'Queen'
     king = 'King'
     joker = "Joker"
+    ace = "Ace"
