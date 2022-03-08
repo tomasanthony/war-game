@@ -16,7 +16,8 @@ To run the tests:
 
 ## If I Had More Time
 If I had more time I would clean up the war.py file and break it into several discrete
-functions.
+functions. The functions in war.py especially I would have liked to have had more time
+to complete in a different way.
 
 I also wanted to write examples of the flexibility of my implementation.
 I did start this by including other playing card suit types - German, Latin, etc. -
