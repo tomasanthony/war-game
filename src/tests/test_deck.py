@@ -16,7 +16,7 @@ def test_deck_validation():
         _ = StandardFrenchDeck(deck_size=56)
 
     # Given joker cards have value in the deck (are in play)
-    rankings = {FrenchCards.one: 1, FrenchCards.two: 2, FrenchCards.three: 3, FrenchCards.four: 4,
+    rankings = {FrenchCards.ace: 1, FrenchCards.two: 2, FrenchCards.three: 3, FrenchCards.four: 4,
                 FrenchCards.five: 5, FrenchCards.six: 6, FrenchCards.seven: 7, FrenchCards.eight: 8,
                 FrenchCards.nine: 9, FrenchCards.ten: 10, FrenchCards.jack: 11, FrenchCards.queen: 12,
                 FrenchCards.king: 13, FrenchCards.joker: 14}
@@ -43,7 +43,7 @@ def test_shuffle_cards():
 def test_draw_card(mock_random):
     # Given a Standard French Deck's top card
     deck = StandardFrenchDeck(deck_size=52)
-    top_card = deck.cards[-1]
+    top_card = deck.cards[0]
 
     # When a card is drawn from the top of the deck, non-randomly
     drawn_card = deck.draw_card()
@@ -52,8 +52,8 @@ def test_draw_card(mock_random):
     assert top_card == drawn_card
 
     # Given the same deck of cards, a mocked random object, and the expected card
-    mock_random.randrange.return_value = 0
-    random_card = deck.cards[0]
+    mock_random.randrange.return_value = -1
+    random_card = deck.cards[-1]
 
     # When a card is drawn from the deck randomly
     drawn_card = deck.draw_card(draw_random=True)
