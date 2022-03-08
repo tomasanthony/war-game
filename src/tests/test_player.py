@@ -8,7 +8,7 @@ def test_build_hand():
     deck = StandardFrenchDeck()
 
     # When that player builds their playing card hand
-    player.build_hand(deck, deck.deck_size//2)
+    player.build_hand(deck, deck.deck_size // 2)
 
     # Then that players playing card hand exists and is the specified length
-    assert player.card_hand and len(player.card_hand) == deck.deck_size//2
+    assert player.card_hand and len(player.card_hand) == deck.deck_size // 2

@@ -77,5 +77,3 @@ def test_insert_card():
     # When the card is inserted back into the deck
     # Then the insertion function successfully returns a True response
     assert deck.insert_card(card)
-
-

@@ -11,10 +11,16 @@ class War:
         self.in_play = False
 
     def initialize_hands(self):
+        """
+        This function initializes the playing hands for the players.
+        """
         self.player_1.build_hand(deck=self.deck, hand_size=self.deck.deck_size // 2)
         self.player_2.build_hand(deck=self.deck, hand_size=self.deck.deck_size // 2)
 
     def play_round(self):
+        """
+        This function plays a round of the game war.
+        """
         winner = False
         won_cards = []
         while not winner and self.player_1.card_hand and self.player_2.card_hand:
@@ -55,6 +61,12 @@ class War:
             print('Player Two loses!')
 
     def card_war(self, won_cards):
+        """This function executes a war, using the mutable won_cards list to pass the winnings
+        back to the calling function
+
+        Args:
+            won_cards (list): a list of cards that were won during the war.
+            """
         tie = True
         while tie and len(self.player_1.card_hand) >= 4 and len(self.player_2.card_hand) >= 4:
             down_cards = [self.player_1.play_card(), self.player_1.play_card(), self.player_1.play_card(),
@@ -80,6 +92,9 @@ class War:
             return True
 
     def play_game(self):
+        """
+        This function handles input from the player.
+        """
         self.in_play = True
         while self.in_play:
             start_round = input(

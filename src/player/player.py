@@ -29,4 +29,3 @@ class Player:
         Returns: (Card): the card that is being played
         """
         return self.card_hand.pop(0)
-
