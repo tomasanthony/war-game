@@ -1,5 +1,5 @@
 # war-game
-Implementation of the card game "War" for Intel's interview process.
+Implementation of the card game "War".
 
 ## Developer Setup
 This project uses python 3.9 and pipenv
