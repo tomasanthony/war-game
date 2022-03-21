@@ -35,7 +35,6 @@ my classes with reusability and flexibility in mind. I wanted the code to be tes
 so while I had the time to do so, I made my code as modular as possible, following the single
 responsibility principle (again, while I had time).
 
-
 Edge cases considered:
 
 When a card game/deck has jokers present, the initialization of the deck and hands is 
