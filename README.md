@@ -13,7 +13,6 @@ To run the tests:
 ```pytest```
 
 
-
 ## If I Had More Time
 If I had more time I would clean up the war.py file and break it into several discrete
 functions. The functions in war.py especially I would have liked to have had more time
